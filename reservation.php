@@ -17,15 +17,19 @@ function selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum){
 
 function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id = 2){
     $parkolohely_szam = selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum);
-    $sql = "INSERT INTO foglalas (kezdeti_datum, veg_datum, felhasznalo_id, parkolohely_szam) VALUES (:kezdeti_datum, :veg_datum, :felhasznalo_id, :parkolohely_szam)";
+    if ($parkolohely_szam === null) {
+        echo "Nincs szabad parkolóhely erre az időszakra.";
+        return;
+    }
+        $sql = "INSERT INTO foglalas (kezdeti_datum, veg_datum, felhasznalo_id, parkolohely_szam) VALUES (:kezdeti_datum, :veg_datum, :felhasznalo_id, :parkolohely_szam)";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':kezdeti_datum' => $kezdetiDatum,
-        ':veg_datum' => $vegDatum,
-        ':felhasznalo_id' => $felhasznalo_id,
-        ':parkolohely_szam' => $parkolohely_szam
-    ]);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':kezdeti_datum' => $kezdetiDatum,
+            ':veg_datum' => $vegDatum,
+            ':felhasznalo_id' => $felhasznalo_id,
+            ':parkolohely_szam' => $parkolohely_szam
+        ]);
 }
 
 function getAllReservations($pdo){
