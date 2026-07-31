@@ -3,7 +3,20 @@ require_once("database.php");
 
 $pdo = connect();
 
-function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id = 2,$parkolohely_szam = 1){
+function selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum){
+    $sql = "SELECT p.szam FROM parkolohely p WHERE NOT EXISTS (SELECT 1 FROM foglalas f WHERE f.parkolohely_szam = p.szam AND f.kezdeti_datum < :veg AND f.veg_datum > :kezdet) ORDER BY p.szam ASC LIMIT 1;";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ":veg" => $vegDatum,
+        ":kezdet" => $kezdetiDatum
+    ]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result["szam"];
+}
+
+function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id = 2){
+    $parkolohely_szam = selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum);
     $sql = "INSERT INTO foglalas (kezdeti_datum, veg_datum, felhasznalo_id, parkolohely_szam) VALUES (:kezdeti_datum, :veg_datum, :felhasznalo_id, :parkolohely_szam)";
 
     $stmt = $pdo->prepare($sql);
