@@ -40,6 +40,16 @@ function getAllReservations($pdo){
     return $result;
 }
 
+function getIdReservations($pdo,$userId){
+    $sql = "SELECT foglalas.parkolohely_szam,foglalas.kezdeti_datum,foglalas.veg_datum, felhasznalo.rendszam, foglalas.id FROM foglalas, felhasznalo WHERE foglalas.felhasznalo_id = felhasznalo.id AND foglalas.felhasznalo_id = :id;";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':id' => $userId
+    ]);
+    $result = $stmt->fetchAll();
+    return $result;
+}
+
 function deleteReservation($pdo,$id){
     $sql = "DELETE FROM foglalas WHERE id = :id";
 

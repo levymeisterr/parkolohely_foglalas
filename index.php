@@ -60,7 +60,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     >
     <button type="submit" name="createReservation">Foglalás</button>
 </form>
+<?php echo $_SESSION["user_id"] ?>
 <h1>FOGLALÁSOK</h1>
+<form method="POST">
+    <button type="submit" name="showAllRes">Összes foglalás megjelenítése</button>
+</form>
+<form method="POST">
+    <button type="submit" name="showIdRes">Saját foglalás(ok) megjelenítése</button>
+</form>
+
 <table>
     <tr>
         <td>Parkolóhely száma</td>
@@ -70,17 +78,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <td></td>
     </tr>
     <?php
-        $foglalasok = getAllReservations($pdo);
-        foreach ($foglalasok as $foglalas) {
-            echo "<tr>";
-            echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
-            echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
-            echo "<td>" . $foglalas["veg_datum"] . "</td>";
-            echo "<td>" . $foglalas["rendszam"] . "</td>";
-            echo "<td><form method='POST'>";
-            echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Törlés </button>";
-            echo "</form></td>";
-            echo "</tr>";
+        if (isset($_POST['showAllRes'])) {
+            $foglalasok = getAllReservations($pdo);
+            foreach ($foglalasok as $foglalas) {
+                echo "<tr>";
+                echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
+                echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
+                echo "<td>" . $foglalas["veg_datum"] . "</td>";
+                echo "<td>" . $foglalas["rendszam"] . "</td>";
+                echo "<td><form method='POST'>";
+                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Törlés </button>";
+                echo "</form></td>";
+                echo "</tr>";
+            }
+        }
+        elseif (isset($_POST['showIdRes'])) {
+            $sajatFoglalasok = getIdReservations($pdo, $_SESSION["user_id"]);
+            foreach ($sajatFoglalasok as $foglalas) {
+                echo "<tr>";
+                echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
+                echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
+                echo "<td>" . $foglalas["veg_datum"] . "</td>";
+                echo "<td>" . $foglalas["rendszam"] . "</td>";
+                echo "<td><form method='POST'>";
+                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Törlés </button>";
+                echo "</form></td>";
+                echo "</tr>";
+            }
         }
     ?>
 </table>
