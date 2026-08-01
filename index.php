@@ -80,35 +80,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php
         if (isset($_POST['showAllRes'])) {
             $foglalasok = getAllReservations($pdo);
-            foreach ($foglalasok as $foglalas) {
-                echo "<tr>";
-                echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
-                echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
-                echo "<td>" . $foglalas["veg_datum"] . "</td>";
-                echo "<td>" . $foglalas["rendszam"] . "</td>";
-                echo "<td><form method='POST'>";
-                if ($foglalas["uid"] == $_SESSION["user_id"]) {
-                    echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
+            if(count($foglalasok) == 0) {
+                $nores = "There are no reservations yet!";
+            }else{
+                foreach ($foglalasok as $foglalas) {
+                    echo "<tr>";
+                    echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
+                    echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
+                    echo "<td>" . $foglalas["veg_datum"] . "</td>";
+                    echo "<td>" . $foglalas["rendszam"] . "</td>";
+                    echo "<td><form method='POST'>";
+                    if ($foglalas["uid"] == $_SESSION["user_id"]) {
+                        echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
+                    }
+                    echo "</form></td>";
+                    echo "</tr>";
                 }
-                echo "</form></td>";
-                echo "</tr>";
             }
         }
         elseif (isset($_POST['showIdRes'])) {
             $sajatFoglalasok = getIdReservations($pdo, $_SESSION["user_id"]);
-            foreach ($sajatFoglalasok as $foglalas) {
-                echo "<tr>";
-                echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
-                echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
-                echo "<td>" . $foglalas["veg_datum"] . "</td>";
-                echo "<td>" . $foglalas["rendszam"] . "</td>";
-                echo "<td><form method='POST'>";
-                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
-                echo "</form></td>";
-                echo "</tr>";
+            if (count($sajatFoglalasok) == 0) {
+                $nores = "You have no reservations!";
+            }else{
+                foreach ($sajatFoglalasok as $foglalas) {
+                    echo "<tr>";
+                    echo "<td>" . $foglalas["parkolohely_szam"] . "</td>";
+                    echo "<td>" . $foglalas["kezdeti_datum"] . "</td>";
+                    echo "<td>" . $foglalas["veg_datum"] . "</td>";
+                    echo "<td>" . $foglalas["rendszam"] . "</td>";
+                    echo "<td><form method='POST'>";
+                    echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
+                    echo "</form></td>";
+                    echo "</tr>";
+                }
             }
         }
     ?>
 </table>
+
+<?php
+    if (isset($nores)) {
+       echo htmlspecialchars($nores);
+    }
+?>
 </body>
 </html>
