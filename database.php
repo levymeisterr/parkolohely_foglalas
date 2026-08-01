@@ -1,9 +1,9 @@
 <?php
 
     function connect(){
-        $servername = "localhost";
+        $servername = "db";
         $username = "root";
-        $password = "";
+        $password = "rootpassword";
 
         $db = "parkolo";
 
