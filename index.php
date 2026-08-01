@@ -46,10 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 <h1>Reservations</h1>
 <form method="POST" class="form-container">
-    <label for="kezdeti_datum">Kezdet:</label>
+    <label for="kezdeti_datum">Start date:</label>
     <input type="datetime-local" id="kezdeti_datum" name="kezdeti_datum" required>
     <br>
-    <label for="veg_datum">Vége:</label>
+    <label for="veg_datum">End date:</label>
     <input type="datetime-local" id="veg_datum" name="veg_datum" required>
     <br>
     <button type="submit" name="createReservation">Reserve a parking space!</button>
