@@ -33,7 +33,7 @@ function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id = 2){
 }
 
 function getAllReservations($pdo){
-    $sql = "SELECT foglalas.parkolohely_szam,foglalas.kezdeti_datum,foglalas.veg_datum, felhasznalo.rendszam, foglalas.id FROM foglalas, felhasznalo WHERE foglalas.felhasznalo_id = felhasznalo.id";
+    $sql = "SELECT foglalas.parkolohely_szam,foglalas.kezdeti_datum,foglalas.veg_datum, felhasznalo.rendszam, foglalas.id, felhasznalo.id as uid FROM foglalas, felhasznalo WHERE foglalas.felhasznalo_id = felhasznalo.id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll();

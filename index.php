@@ -58,23 +58,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             name="veg_datum"
             required
     >
-    <button type="submit" name="createReservation">Foglalás</button>
+    <button type="submit" name="createReservation">Reserve a parking space!</button>
 </form>
-<?php echo $_SESSION["user_id"] ?>
+
 <h1>FOGLALÁSOK</h1>
 <form method="POST">
-    <button type="submit" name="showAllRes">Összes foglalás megjelenítése</button>
+    <button type="submit" name="showAllRes">Show all reservations</button>
 </form>
 <form method="POST">
-    <button type="submit" name="showIdRes">Saját foglalás(ok) megjelenítése</button>
+    <button type="submit" name="showIdRes">Show my reservations</button>
 </form>
 
 <table>
     <tr>
-        <td>Parkolóhely száma</td>
-        <td>Kezdeti dátum</td>
-        <td>Vég dátum</td>
-        <td>Rendszám</td>
+        <td>Parking space</td>
+        <td>Start date</td>
+        <td>End date</td>
+        <td>Number plate</td>
         <td></td>
     </tr>
     <?php
@@ -87,7 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 echo "<td>" . $foglalas["veg_datum"] . "</td>";
                 echo "<td>" . $foglalas["rendszam"] . "</td>";
                 echo "<td><form method='POST'>";
-                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Törlés </button>";
+                if ($foglalas["uid"] == $_SESSION["user_id"]) {
+                    echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
+                }
                 echo "</form></td>";
                 echo "</tr>";
             }
@@ -101,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 echo "<td>" . $foglalas["veg_datum"] . "</td>";
                 echo "<td>" . $foglalas["rendszam"] . "</td>";
                 echo "<td><form method='POST'>";
-                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Törlés </button>";
+                echo "<button type='submit' name='deleteReservation' value='" . $foglalas["id"] . "'> Delete </button>";
                 echo "</form></td>";
                 echo "</tr>";
             }

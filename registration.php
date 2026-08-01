@@ -7,20 +7,31 @@
         $email = $_POST["email"];
         $password = $_POST["password"];
         $numplate = $_POST["number_plate"];
-
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO felhasznalo (email, pw, rendszam) VALUES (:email, :pw, :rendszam)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ":email" => $email,
-            ":pw" => $hashedPassword,
-            ":rendszam" => $numplate
-        ]);
-
-        header("Location: login.php");
-        exit();
-
+        $numplate = strtoupper($numplate);
+        if (!preg_match('/^[A-Z]{3}-[0-9]{3}$/', $numplate)) {
+            $error = "Wrong number plate format!";
+        }else{
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            try {
+                $sql = "INSERT INTO felhasznalo (email, pw, rendszam) VALUES (:email, :pw, :rendszam)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                        ":email" => $email,
+                        ":pw" => $hashedPassword,
+                        ":rendszam" => $numplate
+                ]);
+                header("Location: login.php");
+                exit();
+            }catch (PDOException $e){
+                if ($e->getCode() == 23000) {
+                    if (str_contains($e->getMessage(), "email")) {
+                        $error = "Email already exists!";
+                    }else if (str_contains($e->getMessage(), "rendszam")) {
+                        $error = "Number plate already exists!";
+                    }
+                }
+            }
+        }
     }
 ?>
 <!doctype html>
@@ -45,5 +56,8 @@
         <br><br>
         <button type="submit">Sign Up</button>
     </form>
+    <?php if (isset($error)): ?>
+        <p style="color: red"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
 </body>
 </html>

@@ -29,7 +29,7 @@
             exit();
 
         } else {
-            $error = "Hibás email vagy jelszó!";
+            $error = "Wrong Email or password!";
         }
     }
 
@@ -58,6 +58,6 @@
     <br>
     <button type="submit">Login</button>
 </form>
-
+<p>No user yet? <a href="registration.php">Sign Up!</a></p>
 </body>
 </html>
