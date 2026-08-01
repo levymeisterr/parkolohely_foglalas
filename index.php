@@ -21,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         createReservation(
             $pdo,
             $kezdetiDatum,
-            $vegDatum
+            $vegDatum,
+            $_SESSION["user_id"]
         );
     }
     elseif (isset($_POST["deleteReservation"])) {
@@ -39,35 +40,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="style/style.css" type="text/css">
+    <title>Reservation</title>
 </head>
 <body>
-<form method="POST">
+<h1>Reservations</h1>
+<form method="POST" class="form-container">
     <label for="kezdeti_datum">Kezdet:</label>
-    <input
-            type="datetime-local"
-            id="kezdeti_datum"
-            name="kezdeti_datum"
-            required
-    >
-
+    <input type="datetime-local" id="kezdeti_datum" name="kezdeti_datum" required>
+    <br>
     <label for="veg_datum">Vége:</label>
-    <input
-            type="datetime-local"
-            id="veg_datum"
-            name="veg_datum"
-            required
-    >
+    <input type="datetime-local" id="veg_datum" name="veg_datum" required>
+    <br>
     <button type="submit" name="createReservation">Reserve a parking space!</button>
 </form>
 
-<h1>FOGLALÁSOK</h1>
-<form method="POST">
-    <button type="submit" name="showAllRes">Show all reservations</button>
-</form>
-<form method="POST">
-    <button type="submit" name="showIdRes">Show my reservations</button>
-</form>
+<div class="button-container">
+    <form method="POST">
+        <button type="submit" name="showAllRes">Show all reservations</button>
+    </form>
+    <form method="POST">
+        <button type="submit" name="showIdRes">Show my reservations</button>
+    </form>
+</div>
 
 <table>
     <tr>

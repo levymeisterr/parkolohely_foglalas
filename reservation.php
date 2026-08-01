@@ -15,10 +15,14 @@ function selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum){
     return $result["szam"];
 }
 
-function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id = 2){
+function createReservation($pdo,$kezdetiDatum,$vegDatum,$felhasznalo_id){
+    if ($vegDatum<$kezdetiDatum){
+        echo "Please enter a valid time period!";
+        return;
+    }
     $parkolohely_szam = selectAvailableSpace($pdo,$kezdetiDatum,$vegDatum);
     if ($parkolohely_szam === null) {
-        echo "Nincs szabad parkolóhely erre az időszakra.";
+        echo "No available parking space for this time period.";
         return;
     }
         $sql = "INSERT INTO foglalas (kezdeti_datum, veg_datum, felhasznalo_id, parkolohely_szam) VALUES (:kezdeti_datum, :veg_datum, :felhasznalo_id, :parkolohely_szam)";

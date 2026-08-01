@@ -39,6 +39,10 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style/style.css" type="text/css">
     <title>Login</title>
 </head>
 <body>
@@ -46,10 +50,10 @@
 <h1>Login</h1>
 
 <?php if (isset($error)): ?>
-    <p><?= htmlspecialchars($error) ?></p>
+    <p style="color: red"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 
-<form method="POST" action="login.php">
+<form method="POST" action="login.php" class="form-container">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
     <br>
@@ -58,6 +62,6 @@
     <br>
     <button type="submit">Login</button>
 </form>
-<p>No user yet? <a href="registration.php">Sign Up!</a></p>
+<p>Not singed up yet? <a href="registration.php">Sign Up!</a></p>
 </body>
 </html>
